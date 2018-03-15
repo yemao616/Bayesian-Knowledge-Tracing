@@ -82,7 +82,6 @@ print " "
 print "<<<<<<< student learning gain"
 print "Training accuracy:" + str(accuracy_score(qlg_train_actual, qlg_train_pred))
 print "Accuracy: " + str(accuracy_score(qlg_test_actual, qlg_test_pred))
-acc.append(accuracy_score(qlg_test_actual, qlg_test_pred))
 
 
 # flip P and N here because we care about the low learning gain group: qlg = 0
