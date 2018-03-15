@@ -21,7 +21,6 @@ qlg_test_pred, post_test_pred = [], []
 qlg_test_actual, post_test_actual = [], []
 
 numkc = 10      # change number of kc for different data set
-n = []
 
 for train_index, test_index in kf.split(qlg_y):
     qlg_y_train, qlg_y_test = qlg_y[train_index], qlg_y[test_index]
@@ -50,7 +49,7 @@ for train_index, test_index in kf.split(qlg_y):
         test = [each for each in X_test if each]
         if train and test:
             v += 1
-            h.baum_welch(train, debug=False)
+            h.baum_welch(train, debug=False)        # training part
         nlg_train[i].extend(h.predict_nlg(X_train))
         nlg_test[i].extend(h.predict_nlg(X_test))
 
@@ -61,7 +60,7 @@ for train_index, test_index in kf.split(qlg_y):
     nlg_train = pd.DataFrame(nlg_train).fillna(value=0)
     nlg_test = pd.DataFrame(nlg_test).fillna(value=0)
 
-    logreg = LogisticRegression()
+    logreg = LogisticRegression()                   # logistic regression for learning gain prediction
     logreg.fit(nlg_train, pd.DataFrame(qlg_y_train))
     predict = logreg.predict(nlg_train)
     qlg_train_pred.extend([each for each in predict])
@@ -72,16 +71,8 @@ for train_index, test_index in kf.split(qlg_y):
     qlg_test_pred.extend([each for each in predict])
     qlg_test_actual.extend(qlg_y_test)
 
-    # using MEAN for post prediction part #####
-    # post_train = [each/numkc for each in np.sum(nlg_train, axis=1)]
-    # post_test = [each/numkc for each in np.sum(nlg_test, axis=1)]
-    #
-    # post_train_pred.extend(post_train)
-    # post_train_actual.extend(post_y_train)
-    # post_test_pred.extend(post_test)
-    # post_test_actual.extend(post_y_test)
 
-    lg = LinearRegression()
+    lg = LinearRegression()              # linear regression for post-test scores prediction
     lg.fit(nlg_train, pd.DataFrame(post_y_train))
     predict = lg.predict(nlg_train)
     post_train_pred.extend([each for each in predict])
