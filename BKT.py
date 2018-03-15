@@ -106,5 +106,5 @@ print " "
 print "<<<<<<< student modeling"
 print "Training MSE: ", mean_squared_error(post_train_actual, post_train_pred)
 print "MSE: ", mean_squared_error(post_test_actual, post_test_pred)
-print " trained kc: ", n
+
 
