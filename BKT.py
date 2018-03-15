@@ -34,21 +34,14 @@ for train_index, test_index in kf.split(qlg_y):
 
     nlg_train = [[] for x in xrange(numkc)]
     nlg_test = [[] for x in xrange(numkc)]
-    v = 0
+    
     for i in xrange(numkc):
         X = np.load(folder + "new_bkt_pertime_kc" + str(i) + ".npy")
-        tmp = []
-        for each in X:
-            end = int(len(each)*ind)        # for early prediction
-            tmp.append(each[:end])
-
-        X = np.array(tmp)
         X_train, X_test = X[train_index], X[test_index]
 
         train = [each for each in X_train if each]
         test = [each for each in X_test if each]
         if train and test:
-            v += 1
             h.baum_welch(train, debug=False)        # training part
         nlg_train[i].extend(h.predict_nlg(X_train))
         nlg_test[i].extend(h.predict_nlg(X_test))
